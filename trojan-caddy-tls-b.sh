@@ -90,9 +90,9 @@ caddy_conf(){
 	  read -p "您输入的邮箱正确吗? [y/n]?" answer
   done
       echo "http://${domainname}:80 {
-        redir https://${domainname}:443{url}
+        redir https://${domainname}:666{url}
        }
-        https://${domainname}:443 {
+        https://${domainname}:666 {
         gzip
         timeouts none
         tls ${emailname}
@@ -197,9 +197,9 @@ CA_exist(){
 check_CA(){
     CA_exist
     if [ $FLAG = "NO" ]; then
-        end_time=$(echo | openssl s_client -servername $domainname -connect $domainname:443 2>/dev/null | openssl x509 -noout -dates |grep 'After'| awk -F '=' '{print $2}'| awk -F ' +' '{print $1,$2,$4 }' )
+        end_time=$(echo | openssl s_client -servername $domainname -connect $domainname:666 2>/dev/null | openssl x509 -noout -dates |grep 'After'| awk -F '=' '{print $2}'| awk -F ' +' '{print $1,$2,$4 }' )
     while [ "${end_time}" = "" ]; do
-        end_time=$(echo | openssl s_client -servername $domainname -connect $domainname:443 2>/dev/null | openssl x509 -noout -dates |grep 'After'| awk -F '=' '{print $2}'| awk -F ' +' '{print $1,$2,$4 }' )
+        end_time=$(echo | openssl s_client -servername $domainname -connect $domainname:666 2>/dev/null | openssl x509 -noout -dates |grep 'After'| awk -F '=' '{print $2}'| awk -F ' +' '{print $1,$2,$4 }' )
     done
     end_times=$(date +%s -d "$end_time")
     now_time=$(date +%s -d "$(date | awk -F ' +'  '{print $2,$3,$6}')")
@@ -279,7 +279,7 @@ ${GREEN} ===================================================
 ${GREEN}       恭喜你，Trojan安装和配置成功
 ${GREEN} ===================================================
 $BLUE 域名:         $GREEN ${domainname}
-$BLUE 端口:         $GREEN 443
+$BLUE 端口:         $GREEN 666
 $BLUE 密码:         $GREEN ${password}
 $BLUE 伪装网站请访问： $GREEN https://${domainname}
 $BLUE 执行这句进入管理界面(包括重启服务、修改密 码等)：$GREEN /etc/mgr.sh
